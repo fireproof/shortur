@@ -81,7 +81,9 @@
 		<div class='table'>
 			<div class='table_header'>Migrating from Shorty</div>
 			<div class='line_item'>
-				ShortUr was written to replace Shorty.  The file migrate_from_shorty.php will accomplish this with ease.
+				<ol>
+					<li>Install ShortUr using the <a href='#installation'>instructions above</a>.</li>
+					<li>Run http://yourdomain.com/path/to/shortur/migrate_from_shorty.php</li>
 			</div>
 		</div>
 		

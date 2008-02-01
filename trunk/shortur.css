@@ -64,6 +64,11 @@ div#tabs div {
 
 /* message and error styles */
 
+div#messages, div#errors {
+	margin: 10px;
+	padding: 10px;
+}
+
 div#messages {
 	border: 2px solid green;
 	color: green;

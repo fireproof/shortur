@@ -46,7 +46,7 @@
 		
 		// if this is an insert or update command, there's no reason to get results
 		// unless you want to throw an error
-		if (preg_match("/^(update|insert|delete|create)/i", $sql)) {
+		if (preg_match("/^(update|insert|delete|create|drop)/i", $sql)) {
 			return;
 		}
 		
