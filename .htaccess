@@ -1,0 +1,14 @@
+php_flag display_errors on
+
+<IfModule mod_rewrite.c>
+
+	RewriteEngine on
+  
+	RewriteCond %{REQUEST_FILENAME} test_mod_rewrite$
+	RewriteRule ^.*$ test.php?check=enabled
+
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*)$ index.php?q=$1 [L,QSA]
+
+</IfModule>  

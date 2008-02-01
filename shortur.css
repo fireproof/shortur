@@ -1,0 +1,132 @@
+/* basic html declarations */
+
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+body {
+	font-family: helvetica, arial, sans-serif;
+	font-size: 13px;
+	line-height: 1.2em;
+}
+ 
+/* main div declarations */ 
+ 
+div#wrapper {
+	width: 750px;
+	float: left;
+	margin: 20px 0px 0px 10px;
+}
+
+div#header {
+	margin-left: 15px;
+}	
+
+div#header span.large {
+	font-size: 2.8em;
+}
+
+div#header span.small {
+	font-size: 1.2em;
+	font-weight: normal;
+}
+
+div#horizontal_rule {
+	border-bottom: 2px solid #333;
+	height: 1px;
+	margin-top: -5px;
+}
+
+div#content {
+	text-align: left;
+}
+
+/* tabs styles */
+
+div#tabs {
+	height: 1.5em;
+	margin: 0px 0px 0px 25px;
+	width: 100%;
+}
+
+div#tabs a, div#tabs a:visited, div#tabs a:hover, div#tabs a:link, div#tabs a:active {
+	text-decoration: underline;
+	color: #333;
+	font-weight: bold;
+}
+
+div#tabs div {
+	margin-right: 10px;
+	padding: 5px;
+	float: left;
+}
+
+/* message and error styles */
+
+div#messages {
+	border: 2px solid green;
+	color: green;
+	width: auto;
+	text-align: center;
+}
+
+div#errors {
+	border: 2px solid red;
+	color: red;
+	width: auto;
+	text-align: center;	
+}
+
+/* form styles */
+
+input[type="text"], input[type='password'] {
+	border: 1px solid #333;
+}
+
+/* list styles */
+
+ol, ul {
+	padding-left: 15px;
+}
+
+/* tabular div styles */
+
+div.table {
+	border: 3px solid #333;
+	padding: 0px;
+	margin: 10px 0px 0px 0px;
+	width: auto;
+}
+
+div.table div {
+	padding: 10px;
+	margin: 0px;
+	width: auto;
+}
+
+div.table_header {
+	background-color: #ccc;
+	font-weight: bold;
+	border-bottom: 3px solid #333;
+}
+
+div.line_item em, 
+div.line_item_alt em, 
+div.line_item_highlight em {
+	font-weight: bold;
+	font-style: normal;
+	color: #333;
+}
+
+div.line_item {
+	background-color: #fff;
+}
+
+div.line_item_alt {
+	background-color: #eee;
+}
+
+div.line_item_highlight {
+	background-color: #8ECACF;
+}
