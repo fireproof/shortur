@@ -101,9 +101,16 @@
 			q($create_table_users_sql);
 			q($create_admin_user_sql);
 			
-			$data['messages'][] = "Your ShortUr installation is complete!";
-			$data['messages'][] = 
-				"Be sure to change permissions on config.php to a non-writeable state";
+			$data['messages'][] = <<<EOF
+				Your ShortUr installation is complete!  Now, you should:
+				<ul>
+					<li>Change your config.php file permissions to be non-writeable</li>
+					<li>Delete install.php</li>
+				</ul>
+				If you previously used <a href="http://get-shorty.com/">Shorty</a>, you can easily 
+				migrate your data from Shorty to ShortUr using the <a href='migrate_from_shorty.php'>
+				Shorty Migration Tool.
+EOF;
 			
 			template($data, $false);
 			exit;
@@ -114,47 +121,54 @@
 	$data['content'] =<<<EOF
 	
 	<form action='install.php' method='post'>
+		<div class='table'>
+		
+			<div class='table_header'>
+				Install ShortUr
+			</div>
+		
+			<div class='line_item'>
+				<b>Installation Path: </b>
+				<input type='text' name='http_path' value='$http_path' />
+			</div>
+		
+			<div class='line_item_alt'>
+				<b>Database Host: </b>
+				<input type='text' name='db_host' value='$db_host'/>
+			</div>
+			
+			<div class='line_item'>
+				<b>Database Username: </b>
+				<input type='text' name='db_username' value='$db_username'/>
+			</div>
 	
-		<div class='line_item'>
-			<b>Installation Path: </b>
-			<input type='text' name='http_path' value='$http_path' />
-		</div>
+			<div class='line_item_alt'>
+				<b>Database Password: </b>
+				<input type='password' name='db_password' />
+			</div>
+			
+			<div class='line_item'>
+				<b>Database Name: </b>
+				<input type='text' name='db_name' value='$db_name' /> <br/><br/>
+				<input type='checkbox' name='db_exists' value='1'> This database has already been created.
+			</div>
+		
+			<div class='line_item_alt'>
+				<b>Domain: </b>
+				<input type='text' name='domain' value='$domain' />
+			</div>
+			
+			<div class='line_item'>
+				<b>Admin Password:</b>
+				<input type='password' name='admin_password' />
+			</div>
+			
+			<div class='line_item_alt' style='text-align: center;'>
+				<input type='submit' name='submit' value='Install ShortUr'>
+			</div>
 	
-		<div class='line_item_alt'>
-			<b>Database Host: </b>
-			<input type='text' name='db_host' value='$db_host'/>
 		</div>
-		
-		<div class='line_item'>
-			<b>Database Username: </b>
-			<input type='text' name='db_username' value='$db_username'/>
-		</div>
-
-		<div class='line_item_alt'>
-			<b>Database Password: </b>
-			<input type='password' name='db_password' />
-		</div>
-		
-		<div class='line_item'>
-			<b>Database Name: </b>
-			<input type='text' name='db_name' value='$db_name' /> <br/><br/>
-			<input type='checkbox' name='db_exists' value='1'> This database has already been created.
-		</div>
-	
-		<div class='line_item_alt'>
-			<b>Domain: </b>
-			<input type='text' name='domain' value='$domain' />
-		</div>
-		
-		<div class='line_item'>
-			<b>Admin Password:</b>
-			<input type='password' name='admin_password' />
-		</div>
-		
-		<div class='line_item_alt' style='text-align: center;'>
-			<input type='submit' name='submit' value='Install ShortUr'>
-		</div>
-		
+			
 	</form>
 	
 EOF;
