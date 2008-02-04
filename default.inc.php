@@ -96,15 +96,15 @@
 			if ($user->admin) {
 				$admin_tab =<<<EOF
 					<div id='admin'>
-						<a href='admin.php?action=admin'>User Admin</a>
+						<span><a href='admin.php?action=admin'>User Admin</a></span>
 					</div>
 					<div id='add_user'>
-						<a href='admin.php?action=add_user'>Add User</a>
+						<span><a href='admin.php?action=add_user'>Add User</a></span>
 					</div>
 EOF;
 				$all_urls_tab =<<<EOF
 					<div id='all_urls'>
-						<a href='admin.php?action=all_urls'>All Short URLs
+						<span><a href='admin.php?action=all_urls'>All Short URLs</a></span>
 					</div>
 EOF;
 			}
@@ -114,11 +114,21 @@ EOF;
 			$tabs =<<<EOF
 				<div id='tabs'>
 				
-					<div id='main'><a href='admin.php'>My Short URLs</a></div>
+					<div id='main' class='first'>
+						<span><a href='admin.php'>My Short URLs</a></span>
+					</div>
+					
 					$all_urls_tab
-					<div id='add'><a href='admin.php?action=add'>Add Short URL</a></div>
+					
+					<div id='add'>
+						<span><a href='admin.php?action=add'>Add Short URL</a></span>
+					</div>
+					
 					$admin_tab
-					<div id='logout'><a href='admin.php?action=logout'>Logout</a></div>			
+					
+					<div id='logout'>
+						<span><a href='admin.php?action=logout'>Logout</a></span>
+					</div>			
 				
 				</div id='tabs'>
 				
@@ -131,11 +141,16 @@ EOF;
 	<head>
 		<title>ShortUr: The URL Shortener</title>
 		<link rel='stylesheet' type='text/css' href='shortur.css'>
+		
+		<!--[if IE]>
+			<link rel='stylesheet' type='text/css' href='shortur.ie.css'>
+		<![endif]-->
+		
 		<style>
 			div#$data[tab] {
 				background-color: #ccc;
 			}
-		</style>	
+		</style>
 	</head>
 	<body>
 		<div id='wrapper'>
@@ -145,7 +160,7 @@ EOF;
 				<span class='small'>The URL shortener</span>
 			</div>
 			
-			<div id='horizontal_rule'></div>
+			<div class='horizontal_rule_top'></div>
 
 			$tabs
 			
