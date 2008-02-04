@@ -62,7 +62,12 @@
 							<li><b>Admin Password:</b> The initial passsword for user 'admin'.</li>
 						</ul>
 					</li>
-					<li>Alter your apache installation to point the error document to the ShortUr directory. Where the Apache configuration file is located will differ from system to system.  Change the 'ErrorDocument 404' file to the ShortUr index.php file.</li>
+					<li>
+					 	Alter your Apache configuration file, assigning the ShortUr index.php file to 'ErrorDocument 404'.<br/>
+					 	
+						<pre>ErrorDocument 404 /shortur/index.php</pre>
+					
+					</li>
 					<li>Delete 'install.php'</li>
 					<li>Change the file permissions so that 'config.php' is not writeable by the web server.</li>
 					<li>Login to the admin site at http://yourdomain.com/path/to/shortur/</li>

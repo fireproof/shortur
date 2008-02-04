@@ -69,7 +69,13 @@
 	}
 
 	function template($data, $show_tabs=true) {
-
+	
+		global $http_path;
+		
+		$css_path = $http_path . "shortur.css";
+		$css_ie_6_path = $http_path . "shortur.ie.6.css";
+		$css_ie_7_path = $http_path . "shortur.ie.7.css";
+		
 		// build the errors HTML block
 		$errors_html = "";
 		if ($data['errors']) {
@@ -140,11 +146,15 @@ EOF;
 <html>
 	<head>
 		<title>ShortUr: The URL Shortener</title>
-		<link rel='stylesheet' type='text/css' href='shortur.css'>
+		<link rel='stylesheet' type='text/css' href='$css_path'>
 		
-		<!--[if IE]>
-			<link rel='stylesheet' type='text/css' href='shortur.ie.css'>
+		<!--[if lte IE 6]>
+			<link rel='stylesheet' type='text/css' href='$css_ie_6_path'>
 		<![endif]-->
+
+		<!--[if IE 7]>
+			<link rel='stylesheet' type='text/css' href='$css_ie_7_path'>
+		<![endif]-->		
 		
 		<style>
 			div#$data[tab] {
