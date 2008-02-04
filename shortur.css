@@ -101,6 +101,12 @@ div#errors {
 	text-align: center;	
 }
 
+span.explaination {
+	font-size: .8px;
+	display: block;
+	margin-left: 25px;
+}
+
 /* form styles */
 
 input[type="text"], input[type='password'] {

@@ -15,6 +15,7 @@
 				<ol>
 					<li><a href="#what_is_shortur">What is ShortUr?</a></li>
 					<li><a href="#requirements">Requirements</a></li>
+					<li><a href="#how_it_works">How it Works</a></li>
 					<li><a href="#installation">Installation</a></li>
 					<li><a href="#configuration">Configuration</a></li>
 					<li><a href="#migrating_from_shorty">Migrating from Shorty</a></li>
@@ -42,6 +43,20 @@
 		
 		</div>
 		
+		<a name='how_it_works'>
+		<div class='table'>
+			<div class='table_header'>How it Works</div>
+			<div class='line_item'>
+				A typical ShortUr session works as follows:
+				<ol>
+					<li>A request is made to Apache for a page that doesn't exist.</li>
+					<li>Apache handles the request with the page specified in the 'ErrorDocument 404' directive, which is set to the ShortUr index script.</li>
+					<li>The .htaccess file parses the request path into a query string and feeds it to Shortur's index.php file.</li>
+					<li>If ShortUr finds a match for the request path, it forwards the client to the target URL.</li>
+					<li>If ShortUr does not find a match, it generates a generic 404 page or the custom external 404 page.</li>
+				</ol>
+			</div>
+		</div>
 		
 		<a name='installation'>
 		<div class='table'>
@@ -60,6 +75,7 @@
 							<li><b>This database has already been created:</b> Your MySQL username and password might not have enough access permissions to create a database using this installer.  If you get this error message, create the database using whatever method your web host requires first, then run the installler again and check this box.</li>
 							<li><b>Domain:</b> The domain ShortUr will be running on.</li>
 							<li><b>Admin Password:</b> The initial passsword for user 'admin'.</li>
+							<li><b>External 404 Page:</b> If ShortUr is asked for, but cannot find a match for a URL, it will spit out a generic "Page Not Found" message.  Setting this URL will forward all failed requests to this URL.</li>
 						</ul>
 					</li>
 					<li>
