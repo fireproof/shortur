@@ -6,7 +6,7 @@
 }
 
 body {
-	font-family: helvetica, arial, sans-serif;
+	font-family: arial, sans-serif;
 	font-size: 13px;
 	line-height: 1.2em;
 }
@@ -83,7 +83,8 @@ div#tabs div.first {
 /* message and error styles */
 
 div#messages, div#errors {
-	padding: 0px;
+	padding: 10px 0px 10px 0px;
+	margin-top: 10px;
 }
 
 div#messages {
@@ -109,7 +110,7 @@ input[type="text"], input[type='password'] {
 /* list styles */
 
 ol, ul {
-	padding-left: 15px;
+	padding-left: 20px;
 }
 
 /* tabular div styles */
@@ -134,6 +135,14 @@ div.table_header {
 	width: 100%;
 }
 
+div.table_header_error {
+	background-color: #f00;
+	font-weight: bold;
+	color: #fff;
+	border-bottom: 3px solid #333;
+	width: 100%;
+}
+
 div.line_item em, 
 div.line_item_alt em, 
 div.line_item_highlight em {
@@ -152,4 +161,16 @@ div.line_item_alt {
 
 div.line_item_highlight {
 	background-color: #8ECACF;
+}
+
+/* misc styles */
+blockquote {
+	margin-left: 25px;
+}
+
+pre {
+	width: auto;
+	border: 1px dashed #333;
+	padding: 5px;
+	margin: 5px
 }
