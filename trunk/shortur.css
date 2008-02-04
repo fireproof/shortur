@@ -32,7 +32,14 @@ div#header span.small {
 	font-weight: normal;
 }
 
-div#horizontal_rule {
+div.horizontal_rule {
+	border-bottom: 2px solid #333;
+	height: 1px;
+	margin-top: -1px;
+
+}
+
+div.horizontal_rule_top {
 	border-bottom: 2px solid #333;
 	height: 1px;
 	margin-top: -5px;
@@ -45,9 +52,10 @@ div#content {
 /* tabs styles */
 
 div#tabs {
-	height: 1.5em;
-	margin: 0px 0px 0px 25px;
+	height: 1.8em;
 	width: 100%;
+	border-bottom: 2px solid #333;	
+	vertical-align: middle;
 }
 
 div#tabs a, div#tabs a:visited, div#tabs a:hover, div#tabs a:link, div#tabs a:active {
@@ -57,29 +65,38 @@ div#tabs a, div#tabs a:visited, div#tabs a:hover, div#tabs a:link, div#tabs a:ac
 }
 
 div#tabs div {
-	margin-right: 10px;
-	padding: 5px;
+	height: 100%;
+	padding: 0px 5px 0px 5px;
 	float: left;
+}
+
+div#tabs div span {
+	height: 100%;
+	position: relative;
+	top: 25%;
+}
+
+div#tabs div.first {
+	margin-left: 25px;
 }
 
 /* message and error styles */
 
 div#messages, div#errors {
-	margin: 10px;
-	padding: 10px;
+	padding: 0px;
 }
 
 div#messages {
 	border: 2px solid green;
 	color: green;
-	width: auto;
+	width: 100%;
 	text-align: center;
 }
 
 div#errors {
 	border: 2px solid red;
 	color: red;
-	width: auto;
+	width: 100%;
 	text-align: center;	
 }
 
@@ -101,19 +118,20 @@ div.table {
 	border: 3px solid #333;
 	padding: 0px;
 	margin: 10px 0px 0px 0px;
-	width: auto;
+	width: 100%;
 }
 
 div.table div {
-	padding: 10px;
-	margin: 0px;
+	padding: 5px;
 	width: auto;
+	overflow: hidden;
 }
 
 div.table_header {
 	background-color: #ccc;
 	font-weight: bold;
 	border-bottom: 3px solid #333;
+	width: 100%;
 }
 
 div.line_item em, 
