@@ -76,8 +76,7 @@
 		
 		if (!$data['errors']) {
 
-			write_settings($http_path, $db_host, $db_username, $db_password, $db_name, $domain, 
-				$external_404_page);
+			write_settings($http_path, $db_host, $db_username, $db_password, $db_name, $domain);
 			
 			mysql_select_db($db_name);	
 			
@@ -188,8 +187,7 @@ EOF;
 	template($data, false);
 
 	function write_settings($in_http_path=null, $in_db_host=null, $in_db_username=null, 
-		$in_db_password=null, $in_db_name=null, $in_domain=null, $in_cookie_name='shortur_auth',
-		$in_external_404_page=null) {
+		$in_db_password=null, $in_db_name=null, $in_domain=null, $in_external_404_page=null) {
 
 		global $config_file, $http_path, $db_host, $db_username, $db_password, $domain, $cookie_name;
 
@@ -203,7 +201,7 @@ EOF;
 	\$db_name = '$in_db_name';
 	\$domain = '$in_domain';
 	\$external_404_page = '$in_external_404_page';
-	\$cookie_name = '$in_cookie_name';	
+	\$cookie_name = 'shortur_auth';	
 	
 ?>
 EOF;
