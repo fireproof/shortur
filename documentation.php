@@ -27,7 +27,7 @@
 		<div class='table'>
 			<div class='table_header'>What is ShortUr?</div>
 			<div class='line_item'>
-				ShortUr is a utility that allows long, convoluted URLs to be accessed by short, meaningful URLs on your site.
+				<p>ShortUr is a utility that allows long, convoluted URLs to be accessed by short, meaningful URLs on your site.</p>
 			</div>
 		</div>
 		
@@ -63,7 +63,8 @@
 						</ul>
 					</li>
 					<li>Alter your apache installation to point the error document to the ShortUr directory. Where the Apache configuration file is located will differ from system to system.  Change the 'ErrorDocument 404' file to the ShortUr index.php file.</li>
-					<li>Restart Apache</li>
+					<li>Delete 'install.php'</li>
+					<li>Change the file permissions so that 'config.php' is not writeable by the web server.</li>
 					<li>Login to the admin site at http://yourdomain.com/path/to/shortur/</li>
 				</ol>
 			</div>
