@@ -16,6 +16,7 @@
 	$db_exists = $_REQUEST['db_exists'];
 	$admin_password = $_REQUEST['admin_password'];
 	$domain = d($_REQUEST['domain'], $_SERVER['HTTP_HOST']);
+	$external_404_page = $_REQUEST['external_404_page'];
 	
 	// can this user write to the config file?
 	if (!is_writeable($config_file)) {
@@ -73,9 +74,12 @@
 			}	
 		}
 		
+		if 
+		
 		if (!$data['errors']) {
 
-			write_settings($http_path, $db_host, $db_username, $db_password, $db_name, $domain);
+			write_settings($http_path, $db_host, $db_username, $db_password, $db_name, $domain, 
+				$external_404_page);
 			
 			mysql_select_db($db_name);	
 			
@@ -130,6 +134,7 @@ EOF;
 			<div class='line_item'>
 				<b>Installation Path: </b>
 				<input type='text' name='http_path' value='$http_path' />
+				<span class='explaination'>The web-accessible path where ShortUr will be installed. Include the trailing slash.</span>
 			</div>
 		
 			<div class='line_item_alt'>
@@ -149,20 +154,29 @@ EOF;
 			
 			<div class='line_item'>
 				<b>Database Name: </b>
-				<input type='text' name='db_name' value='$db_name' /> <br/><br/>
+				<input type='text' name='db_name' value='$db_name' /><br/>
 				<input type='checkbox' name='db_exists' value='1'> This database has already been created.
+				<span class='explaination'>If the database credentials for your ShortUr installation don't have permission enough to create a databse, create the database using the command line or a tool such as phpmyadmin first, then run this install and check this box.</span>
 			</div>
 		
 			<div class='line_item_alt'>
 				<b>Domain: </b>
 				<input type='text' name='domain' value='$domain' />
+				<span class='explaination'>The root domain that ShortUr will be working on.</span>
 			</div>
 			
 			<div class='line_item'>
 				<b>Admin Password:</b>
 				<input type='password' name='admin_password' />
+				<span class='explaination'>The password for the first username, 'admin'.</span>
 			</div>
 			
+			<div class='line_item_alt'>
+				<b>External 404 Page:</b>
+				<input type='text' name='external_404_page' value='$external_404_page' />
+				<span class='explaination'>If left blank, ShortUr will generate a generic "Page Not Found" error.</span>
+				
+			</div>
 			<div class='line_item_alt' style='text-align: center;'>
 				<input type='submit' name='submit' value='Install ShortUr'>
 			</div>
@@ -176,7 +190,8 @@ EOF;
 	template($data, false);
 
 	function write_settings($in_http_path=null, $in_db_host=null, $in_db_username=null, 
-		$in_db_password=null, $in_db_name=null, $in_domain=null, $in_cookie_name='shortur_auth') {
+		$in_db_password=null, $in_db_name=null, $in_domain=null, $in_cookie_name='shortur_auth',
+		$in_external_404_page=null) {
 
 		global $config_file, $http_path, $db_host, $db_username, $db_password, $domain, $cookie_name;
 
@@ -189,6 +204,7 @@ EOF;
 	\$db_password = '$in_db_password';
 	\$db_name = '$in_db_name';
 	\$domain = '$in_domain';
+	\$external_404_page = '$in_external_404_page';
 	\$cookie_name = '$in_cookie_name';	
 	
 ?>
