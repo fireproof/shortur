@@ -6,6 +6,6 @@
 	$db_password = '';
 	$db_name = '';
 	$domain = '';
-	$cookie_name = '';	
+	$cookie_name = 'shortur_auth';	
 	
 ?>
