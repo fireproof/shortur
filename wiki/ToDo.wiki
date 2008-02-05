@@ -1,3 +1,4 @@
   # Page result sets
   # Search for short urls
   # Better UI for displaying long target addresses
+  # Users can retrieve/reset passwords on their own.
