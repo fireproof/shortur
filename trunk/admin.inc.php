@@ -155,7 +155,7 @@ EOF;
 	
 	function short_urls($get_all_urls=false) {
 		
-		global $domain;
+		global $base_url;
 		$whose_urls = ($get_all_urls ? "All" : "My");
 		
 		$output =<<<EOF
@@ -175,7 +175,7 @@ EOF;
 			$n = 0;
 			foreach ($result as $url) {
 				$output .= "<div class='line_item" . ($n%2 ? '_alt' : '') . "'>";
-				$output .= "<em>$domain$url->short_url</em> points to <em>$url->target</em> " .
+				$output .= "<em>$base_url$url->short_url</em> points to <em>$url->target</em> " .
 					"<a href='admin.php?action=edit&id=$url->id'>edit</a> " . 
 					"<a href='admin.php?action=delete&id=$url->id'>delete</a>";
 					
@@ -195,7 +195,7 @@ EOF;
 	
 	function short_url_form($action='add', $short_url=null, $target_url='http://', $id=null) {
 		
-		global $domain;
+		global $base_url;
 		$action_display = ucfirst($action);
 		$action_form_element = strtolower($action);
 		$hidden_form_id = "";
@@ -220,7 +220,7 @@ EOF;
 					
 					<div class='line_item'>
 						<b>Choose a short URL:</b>
-						<span style='color: #009;'>$domain</span> 
+						<span style='color: #009;'>$base_url</span> 
 						<input type='text' name='short_url' value='$short_url' size='40'/>
 					</div>
 					

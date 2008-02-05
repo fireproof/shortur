@@ -82,7 +82,7 @@ div#tabs div.first {
 
 /* message and error styles */
 
-div#messages, div#errors {
+div#super_errors, div#messages, div#errors {
 	padding: 10px 0px 10px 0px;
 	margin-top: 10px;
 }
@@ -94,11 +94,17 @@ div#messages {
 	text-align: center;
 }
 
-div#errors {
+div#super_errors, div#errors {
 	border: 2px solid red;
 	color: red;
 	width: 100%;
 	text-align: center;	
+}
+
+div#super_errors {
+	font-weight: bold;
+	font-size: 1.3em;
+	border: 5px solid red;
 }
 
 span.explaination {
