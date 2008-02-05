@@ -13,7 +13,6 @@
 
 		$shorty_db = @mysql_connect($shorty_db_host, $shorty_db_username, $shorty_db_password);
 		if (!$shorty_db) {
-			debug(array($shorty_db_host, $shorty_db_username, $shorty_db_password));
 			$data['errors'][] = "Cannot connect to Shorty database with the credentials you supplied.";
 			template($data);
 			exit;
@@ -36,7 +35,7 @@
 			exit;
 		}			
 
-		$shorty_entries_array = $shorty_users_array = array();
+		$shorty_entries_array = $shorty_users_array = $shorty_to_shortur_user_ids = array();
 		
 		while ($user = mysql_fetch_object($shorty_users)) {
 			if ($user->username != 'admin') {
@@ -54,9 +53,16 @@
 	
 		foreach ($shorty_users_array as $user) {
 		
-			mysql_query("insert into users (username, password) values (" .
+			mysql_query("insert into users (username, password, admin) values (" .
 				"'" . $user->username . "', " .
-				"'" . $user->password . "')", $shortur_db);
+				"'" . $user->password . "', " .
+				($user->level == 1 ? '1' : '0') . ")", $shortur_db);
+
+			// create a table to translate the user_id from the shorty installation
+			// to the shortur installation
+
+			$shorty_to_shortur_user_ids[$user->id] = mysql_insert_id($shortur_db);
+			
 		}
 		
 		foreach ($shorty_entries_array as $entry) {
@@ -67,6 +73,9 @@
 			if ($entry->key4) $short_url .= '/' . $entry->key4;
 			if ($entry->key5) $short_url .= '/' . $entry->key5;		
 			
+			// set the entry's user id to the translated shortur user ID
+			$entry->user_id = $shorty_to_shortur_user_ids[$entry->user_id];
+
 			mysql_query("insert into entries (user_id, target, short_url) values (" .
 				$entry->user_id . ", " .
 				"'" . $entry->target . "', " . 

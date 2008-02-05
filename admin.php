@@ -11,13 +11,13 @@
 
 	// check for the existence of the install file and alert the admin to it
 	if (file_exists('install.php')) {
-		$data['errors'][] = "The file 'install.php' still exists in your directory structure.  Delete the file to secure ShortUr from malicious users.";
+		$data['super_errors'][] = "The file 'install.php' still exists in your directory structure.  Delete the file to secure ShortUr from malicious users.";
 	}
 	
 	// see if 'config.php' is writeable by the current process
 	if (is_writeable('config.php')) {
 		$wwwuser = `whoami`;
-		$data['errors'][] = "The file 'config.php' is writeable by the web server user ($wwwuser).  Edit the file permissions so that it is not writeable.";
+		$data['super_errors'][] = "The file 'config.php' is writeable by the web server user ($wwwuser).  Edit the file permissions so that it is not writeable.";
 	}
 	
 	switch ($_REQUEST['action']) {

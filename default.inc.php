@@ -77,6 +77,15 @@
 		$css_ie_7_path = $http_path . "shortur.ie.7.css";
 		
 		// build the errors HTML block
+
+		$super_errors_html = "";
+		if ($data['super_errors']) {
+			$super_errors_html = "<div id='super_errors'>";
+			foreach ($data['super_errors'] as $s)
+				$super_errors_html .= "$s <br/>";
+			$super_errors_html .= "</div>";
+		}
+
 		$errors_html = "";
 		if ($data['errors']) {
 			$errors_html = "<div id='errors'>";
@@ -174,6 +183,8 @@ EOF;
 
 			$tabs
 			
+			$super_errors_html 
+
 			$messages_html
 			
 			$errors_html

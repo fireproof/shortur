@@ -2,7 +2,7 @@
 
 	require_once('default.inc.php');
 	$config_file = 'config.php';
-	
+
 	$data = array();
 	
 	$estimated_httpd_path = 'http://' . $_SERVER['HTTP_HOST'] . 
@@ -15,7 +15,7 @@
 	$db_name = d($_REQUEST['db_name'], 'shortur');
 	$db_exists = $_REQUEST['db_exists'];
 	$admin_password = $_REQUEST['admin_password'];
-	$domain = d($_REQUEST['domain'], $_SERVER['HTTP_HOST']);
+	$base_url = d($_REQUEST['base_url'], 'http://' . $_SERVER['HTTP_HOST'] . '/');
 	$external_404_page = $_REQUEST['external_404_page'];
 	
 	// can this user write to the config file?
@@ -52,7 +52,10 @@
 			
 		if (!$admin_password)
 			$data['errors'][] = "You must specify an admin password.";
-			
+
+		if (!$base_url)
+			$data['errors'][] = "You must specify a base URL.";
+
 		if ($db_host && $db_username && $db_password && $db_name && $admin_password) {
 			
 			if (!($db = @mysql_connect($db_host, $db_username, $db_password))) {
@@ -76,7 +79,7 @@
 		
 		if (!$data['errors']) {
 
-			write_settings($http_path, $db_host, $db_username, $db_password, $db_name, $domain);
+			write_settings($http_path, $db_host, $db_username, $db_password, $db_name, $base_url);
 			
 			mysql_select_db($db_name);	
 			
@@ -157,9 +160,9 @@ EOF;
 			</div>
 		
 			<div class='line_item_alt'>
-				<b>Domain: </b>
-				<input type='text' name='domain' value='$domain' />
-				<span class='explaination'>The domain that ShortUr will prepend to short URLs.</span>
+				<b>Base URL: </b>
+				<input type='text' name='base_url' value='$base_url' />
+				<span class='explaination'>The base URL for target URLs.</span>
 			</div>
 			
 			<div class='line_item'>
@@ -187,9 +190,9 @@ EOF;
 	template($data, false);
 
 	function write_settings($in_http_path=null, $in_db_host=null, $in_db_username=null, 
-		$in_db_password=null, $in_db_name=null, $in_domain=null, $in_external_404_page=null) {
+		$in_db_password=null, $in_db_name=null, $in_base_url=null, $in_external_404_page=null) {
 
-		global $config_file, $http_path, $db_host, $db_username, $db_password, $domain, $cookie_name;
+		global $config_file, $http_path, $db_host, $db_username, $db_password, $base_url, $cookie_name;
 
 		$output =<<<EOF
 <?php
@@ -199,7 +202,7 @@ EOF;
 	\$db_username = '$in_db_username';
 	\$db_password = '$in_db_password';
 	\$db_name = '$in_db_name';
-	\$domain = '$in_domain';
+	\$base_url = '$in_base_url';
 	\$external_404_page = '$in_external_404_page';
 	\$cookie_name = 'shortur_auth';	
 	
@@ -214,7 +217,7 @@ EOF;
 		$db_host = $in_db_host;
 		$db_username = $in_db_username;
 		$db_password = $in_db_password;
-		$domain = $in_domain;
+		$base_url = $in_base_url;
 		$cookie_name = $in_cookie_name;
 		
 	}
