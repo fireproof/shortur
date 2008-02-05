@@ -159,7 +159,7 @@ EOF;
 			<div class='line_item_alt'>
 				<b>Domain: </b>
 				<input type='text' name='domain' value='$domain' />
-				<span class='explaination'>The root domain that ShortUr will be working on.</span>
+				<span class='explaination'>The domain that ShortUr will prepend to short URLs.</span>
 			</div>
 			
 			<div class='line_item'>
