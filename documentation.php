@@ -73,7 +73,7 @@
 							<li><b>Database Password:</b> The password for your MySQL database.</li>
 							<li><b>Database Name:</b> The name of your MySQL database. Your MySQL username and password might not have enough access to create a database.
 							<li><b>This database has already been created:</b> Your MySQL username and password might not have enough access permissions to create a database using this installer.  If you get this error message, create the database using whatever method your web host requires first, then run the installler again and check this box.</li>
-							<li><b>Domain:</b> The domain ShortUr will be running on.</li>
+							<li><b>Domain:</b> The root domain ShortUr will prepend to short URLs.</li>
 							<li><b>Admin Password:</b> The initial passsword for user 'admin'.</li>
 							<li><b>External 404 Page:</b> If ShortUr is asked for, but cannot find a match for a URL, it will spit out a generic "Page Not Found" message.  Setting this URL will forward all failed requests to this URL.</li>
 						</ul>
