@@ -18,7 +18,6 @@
 					<li><a href="#how_it_works">How it Works</a></li>
 					<li><a href="#installation">Installation</a></li>
 					<li><a href="#configuration">Configuration</a></li>
-					<li><a href="#migrating_from_shorty">Migrating from Shorty</a></li>
 					<li><a href="#credits">Credits</a></li>
 				</ol>
 			</div>			
@@ -29,6 +28,7 @@
 			<div class='table_header'>What is ShortUr?</div>
 			<div class='line_item'>
 				<p>ShortUr is a utility that allows long, convoluted URLs to be accessed by short, meaningful URLs on your site.</p>
+				<p>ShortUr can import data from <a href='http://get-shorty.com'>Shorty</a> installations.</p>
 			</div>
 		</div>
 		
@@ -65,7 +65,11 @@
 				<ol>
 					<li>Download a copy of ShortUr</li>
 					<li>Unpack the file and upload the contents to where you want it to reside on your web server.</li>
-					<li>Run the install script, located at <em>http://yourdomain.com/path/to/shortur/install.php</em>
+					<li>
+						Change the permissions for config.php so that the webserver user can write to it.  From the command line, run:
+						<pre>chmod a+w config.php</pre>
+					</li>
+					<li>Point your web browser to <em>http://yourdomain.com/path/to/shortur/install.php</em>.  Enter the following information:
 						<ul>
 							<li><b>Installation Path:</b> The web path where ShortUr will be installed.</li>
 							<li><b>Database Host:</b> The host where the ShortUr MySQL database will be located.</li>
@@ -79,14 +83,16 @@
 						</ul>
 					</li>
 					<li>
-					 	Alter your Apache configuration file, assigning the ShortUr index.php file to 'ErrorDocument 404'.<br/>
-					 	
-						<pre>ErrorDocument 404 /shortur/index.php</pre>
-					
+					 	Assign the path of the ShortUr index.php file to 'ErrorDocument 404' in your Apache configuration file.<br/>
+					 	<pre>ErrorDocument 404 /path/to/shortur/index.php</pre>
 					</li>
+					<li>If you're migrating from <a href='http://get-shorty.com/'>Shorty</a>, point your web browser to <em>http://yourdomain.com/path/to/shortur/migrate_from_shorty.php</em> and enter the information about your Shorty installation</a>.
 					<li>Delete 'install.php'</li>
-					<li>Change the file permissions so that 'config.php' is not writeable by the web server.</li>
-					<li>Login to the admin site at http://yourdomain.com/path/to/shortur/</li>
+					<li>
+						Change the file permissions so that 'config.php' is not writeable by the web server.  From the command line, run:
+						<pre>chmod go-wx config.php</pre>
+					</li>
+					<li>Login to the admin site at <em>http://yourdomain.com/path/to/shortur/</em></li>
 				</ol>
 			</div>
 		</div>
@@ -96,16 +102,6 @@
 			<div class='table_header'>Configuration</div>
 			<div class='line_item'>
 				All the configuration information is kept in config.php.  If you need to make changes to your ShortUr installation, edit config.php.
-			</div>
-		</div>
-		
-		<a name='migrating_from_shorty'>
-		<div class='table'>
-			<div class='table_header'>Migrating from Shorty</div>
-			<div class='line_item'>
-				<ol>
-					<li>Install ShortUr using the <a href='#installation'>instructions above</a>.</li>
-					<li>Run http://yourdomain.com/path/to/shortur/migrate_from_shorty.php</li>
 			</div>
 		</div>
 		
