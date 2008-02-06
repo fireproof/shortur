@@ -306,7 +306,7 @@ EOF;
 			if (count($urls))
 				$url_count_display = "This will transfer ownership of their " .
 					count($urls) . " URL" . (count($urls) > 1 ? 's ' : ' ') . 
-					"to the user <b>root</b>.<br/><br/>";
+					"to the user <b>admin</b>.<br/><br/>";
 			
 			if ($_REQUEST['submit']) {
 			
