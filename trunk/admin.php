@@ -118,7 +118,11 @@ EOF;
 			$_REQUEST['short_url'] = preg_replace("/^(\/*)/", "", $_REQUEST['short_url']);
 			$_REQUEST['short_url'] = preg_replace("/(\/*)$/", "", $_REQUEST['short_url']);			
 			$_REQUEST['target_url'] = trim($_REQUEST['target_url']);
-		
+			
+			// check that an incoming ID is specified
+			if (!$_REQUEST['id'])
+				$data['errors'][] = "No incoming id specified.";
+			
 			list($short_url) = q("select * from entries where id = " . s($_REQUEST[id]));
 			
 			// make sure this short url exists
@@ -135,7 +139,7 @@ EOF;
 					
 					// make sure that the short url doesn't exist in the database
 					$short_urls = q("select * from entries where short_url = '" .
-						s(trim($_REQUEST['short_url'])) . "'");
+						s(trim($_REQUEST['short_url'])) . "' and id != " . s($_REQUEST[id]));
 					
 					if ($short_urls) {
 						$data['errors'][] = 
