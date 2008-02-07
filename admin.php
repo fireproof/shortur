@@ -112,6 +112,12 @@ EOF;
 		case 'edit':
 
 			$data['tab'] = 'add';
+
+			// clean up the input
+			$_REQUEST['short_url'] = trim($_REQUEST['short_url']);
+			$_REQUEST['short_url'] = preg_replace("/^(\/*)/", "", $_REQUEST['short_url']);
+			$_REQUEST['short_url'] = preg_replace("/(\/*)$/", "", $_REQUEST['short_url']);			
+			$_REQUEST['target_url'] = trim($_REQUEST['target_url']);
 		
 			list($short_url) = q("select * from entries where id = " . s($_REQUEST[id]));
 			
