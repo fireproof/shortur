@@ -161,6 +161,8 @@ div.table_footer {
 }
 
 div.paging {
+	background-color: #fff;
+	border: 1px solid black;
 	float: right;
 	clear: right;
 }

@@ -254,19 +254,24 @@ EOF;
 	}
 	
 	function users() {
+
+		global $per_page;
+
+		$users = q("select * from users");
 		
+		list($paging_links, $start, $end) = _paging($users);
+		$users = array_splice($users, $start, $per_page);
+
 		$output =<<<EOF
 			<div class='table'>
 				<div class='table_header'>
-					Users
+					<div class='table_header_title'>Users</div>
+					$paging_links
 				</div>
 EOF;
-
-		$users = q("select * from users");
+		
 		$n = 0;
 		foreach ($users as $user) {
-			
-			if ($user->username == 'root') continue;
 			
 			$css_modifier = ($user->admin ? '_highlight' :  ($n%2 ? '_alt' : ''));
 			$output .= "<div class='line_item$css_modifier'>";
@@ -280,6 +285,9 @@ EOF;
 			$n++;
 			
 		}
+		
+		if ($paging_links)
+			$output .= "<div class='table_footer'>$paging_links</div>";
 		
 		$output .= "</div class='table'>";
 		
@@ -340,23 +348,31 @@ EOF;
 		if (count($result_set) > $per_page) {
 			
 			$tmp_base_url = $http_path . "admin.php?action=$action&";
-			
+			$total_pages = ceil(count($result_set) / $per_page);
 			$start = ($page-1) * $per_page;
 			$end = (count($result_set) > ($start+$per_page) ? ($start+$per_page) : count($result_set));
 			$start_page = (($page-$show_pages) < 1 ? 1 : $page-$show_pages);
-			$end_page = (($page+$show_pages) > ceil(count($result_set) / $per_page) ? 
-				ceil(count($result_set) / $per_page) :
+			$end_page = (($page+$show_pages) > $total_pages ? 
+				$total_pages :
 				$page + $show_pages);
 			
-			$paging_links .= "<div class='paging'>";
+			
+			$paging_links .= "<div class='paging'><b>Page:</b>  ";
+			
+			if ($start_page > 1)
+				$paging_links .= "<a href='" . $tmp_base_url . "page=1'>1</a> ... ";
 			
 			for ($p = $start_page; $p < $page; $p++)
-				$paging_links .= "<a class='backward' href='" . $tmp_base_url . "page=$p'>$p</a> ";
+				$paging_links .= "<a href='" . $tmp_base_url . "page=$p'>$p</a> ";
 			
 			$paging_links .= "<b>$page</b> ";
 			
 			for ($p = $page+1; $p <= $end_page; $p++)
 				$paging_links .= "<a href='" . $tmp_base_url . "page=$p'>$p</a> ";
+
+			if ($end_page < $total_pages)
+				$paging_links .= " ... <a href='" . $tmp_base_url . "page=$total_pages'>$total_pages</a>";
+
 			
 			$paging_links .= "</div>";
 			
