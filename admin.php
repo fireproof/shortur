@@ -374,7 +374,8 @@ EOF;
 		default:
 
 			$data['tab'] = 'main';
-			$data['content'] .= short_urls(false, $_REQUEST['page']);
+			$data['content'] .= short_urls(false);
+			
 			template($data);
 			break;
 	

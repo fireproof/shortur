@@ -155,14 +155,17 @@ EOF;
 	
 	function short_urls($get_all_urls=false) {
 		
+		global $http_path;
 		global $base_url;
-		$whose_urls = ($get_all_urls ? "All" : "My");
+		global $per_page;
+		global $show_pages;
 		
-		$output =<<<EOF
-			<div class='table'>
-				<div class='table_header'>$whose_urls Short URLs</div>
-EOF;
-			
+		$page = d($_REQUEST['page'], 1);
+		$action = $_REQUEST['action'];		
+		
+		$whose_urls = ($get_all_urls ? "All" : "My");
+		$paging_links = '';
+		
 		// get all the URLs for this user
 		$sql = "select * from entries";
 		
@@ -171,6 +174,17 @@ EOF;
 		
 		$result = q($sql);
 		
+		list($paging_links, $start, $end) = _paging($result);
+		$result = array_splice($result, $start, $per_page);
+		
+		$output =<<<EOF
+			<div class='table'>
+				<div class='table_header'>
+					<div class='table_header_title'>$whose_urls Short URLs</div>
+					$paging_links
+				</div>
+EOF;
+			
 		if ($result) {
 			$n = 0;
 			foreach ($result as $url) {
@@ -187,7 +201,12 @@ EOF;
 			$output .= "<div class='line_item'>You have no Short URLs set up</div>";
 		}
 		
-		$output .= "</div class='table'>";
+		$output .=<<<EOF
+			<div class='table_footer'>
+				$paging_links
+			</div>
+		</div class='table'>
+EOF;
 		
 		return $output;
 				
@@ -303,6 +322,48 @@ EOF;
 			</form>
 EOF;
 
+	}
+	
+	function _paging($result_set) {
+		
+		global $http_path;
+		global $base_url;
+		global $per_page;
+		global $show_pages;
+		
+		$page = d($_REQUEST['page'], 1);
+		$action = $_REQUEST['action'];		
+		$start = 0;
+		$end = count($result_set)-1;
+		$paging_links = '';
+		
+		if (count($result_set) > $per_page) {
+			
+			$tmp_base_url = $http_path . "admin.php?action=$action&";
+			
+			$start = ($page-1) * $per_page;
+			$end = (count($result_set) > ($start+$per_page) ? ($start+$per_page) : count($result_set));
+			$start_page = (($page-$show_pages) < 1 ? 1 : $page-$show_pages);
+			$end_page = (($page+$show_pages) > ceil(count($result_set) / $per_page) ? 
+				ceil(count($result_set) / $per_page) :
+				$page + $show_pages);
+			
+			$paging_links .= "<div class='paging'>";
+			
+			for ($p = $start_page; $p < $page; $p++)
+				$paging_links .= "<a class='backward' href='" . $tmp_base_url . "page=$p'>$p</a> ";
+			
+			$paging_links .= "<b>$page</b> ";
+			
+			for ($p = $page+1; $p <= $end_page; $p++)
+				$paging_links .= "<a href='" . $tmp_base_url . "page=$p'>$p</a> ";
+			
+			$paging_links .= "</div>";
+			
+		}
+		
+		return array($paging_links, $start, $end);
+			
 	}
 	
 ?>

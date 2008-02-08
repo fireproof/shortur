@@ -204,7 +204,9 @@ EOF;
 	\$db_name = '$in_db_name';
 	\$base_url = '$in_base_url';
 	\$external_404_page = '$in_external_404_page';
-	\$cookie_name = 'shortur_auth';	
+	\$cookie_name = 'shortur_auth';
+	\$per_page = 20;
+	\$show_pages = 2;
 	
 ?>
 EOF;
