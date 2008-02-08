@@ -142,11 +142,27 @@ div.table div {
 	overflow: hidden;
 }
 
-div.table_header {
+div.table_footer, div.table_header {
 	background-color: #ccc;
 	font-weight: bold;
-	border-bottom: 3px solid #333;
 	width: 100%;
+}
+
+div.table_header {
+	border-bottom: 3px solid #333;
+}
+
+div.table_header div.table_header_title {
+	float: left;
+}
+
+div.table_footer {
+	border-top: 3px solid #333;
+}
+
+div.paging {
+	float: right;
+	clear: right;
 }
 
 div.table_header_error {
