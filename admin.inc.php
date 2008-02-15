@@ -1,7 +1,7 @@
 <?php
 
 	require_once('default.inc.php');
-	$acceptable_http_response_codes = array('200', '302');
+	$acceptable_http_response_codes = array('200', '302', '401');
 	
 	session_start();
 	
