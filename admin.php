@@ -44,11 +44,13 @@
 				}
 				
 				// make sure that the target URL is valid
+				/*
 				if (!validate_target($_REQUEST['target_url'])) {
 					$data['errors'][] = 
 						"The target URL is not a valid website.  Please check the target URL and try again.";
 				}	
-		
+				*/
+				
 				if (!$data['errors']) {
 					q("insert into entries(user_id, target, short_url) values (" . 
 						s($_SESSION[shortur_user_id]) . ", ' " . s($_REQUEST[target_url]) . "', '" . 
@@ -147,11 +149,13 @@ EOF;
 					}
 
 					// make sure that the target URL is valid
+					/*
 					if (!validate_target($_REQUEST['target_url'])) {
 						$data['errors'][] = 
 							"The target URL is not a valid website.  Please check the target URL and try again.";
 					}						
-					
+					*/
+				
 					if (!$data['errors']) {
 						q("update entries set target = '" . s($_REQUEST[target_url]) . "', short_url = '" . 
 							s($_REQUEST[short_url]) . "' where id = " . s($_REQUEST[id]));
