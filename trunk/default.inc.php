@@ -63,6 +63,7 @@
 		else return $y;
 	}
 	
+	// check for SQL injection
 	function s($in) {
 		$db = db();
 		return mysql_real_escape_string($in, $db);
