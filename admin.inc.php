@@ -190,8 +190,8 @@ EOF;
 			foreach ($result as $url) {
 				$output .= "<div class='line_item" . ($n%2 ? '_alt' : '') . "'>";
 				$output .= "<em>$base_url$url->short_url</em> points to <em>$url->target</em> " .
-					"<a href='admin.php?action=edit&id=$url->id'>edit</a> " . 
-					"<a href='admin.php?action=delete&id=$url->id'>delete</a>";
+					"<span class='line_item_action'><a href='admin.php?action=edit&id=$url->id'>edit</a> " . 
+					"<a href='admin.php?action=delete&id=$url->id'>delete</a></span>";
 					
 				$output .= "</div>";
 				$n++;

@@ -196,6 +196,8 @@ div.line_item_highlight {
 	background-color: #8ECACF;
 }
 
+span.line_item_action { float: right; }
+
 /* misc styles */
 blockquote {
 	margin-left: 25px;
