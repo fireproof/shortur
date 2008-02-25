@@ -1,7 +1,7 @@
 <?php
 
 	require_once('default.inc.php');
-	$acceptable_http_response_codes = array('200', '302', '401');
+	$acceptable_http_response_codes = array('200', '302');
 	
 	session_start();
 	
@@ -104,25 +104,40 @@ EOF;
 	function validate_target($url) {
 	
 		global $acceptable_http_response_codes;
-	
-		// strip the http:// off the front and trim the url
-		$url = trim(preg_replace("/^http:\/\//", "", $url));
+
+		$protocol_ports = array(
+			'http'=>'80',
+			'https'=>'443'
+		);
+
+		// strip the protocol off the front and trim the url
+		list($protocol, $host) = split('://', $url);
+		$protocol = strtolower($protocol);
 
 		// split the URL on the first instance of a slash, if it exists
-		$host = $path = "";
-		if (strpos($url, '/')) {
-			$host = substr($url, 0, strpos($url, '/'));
-			$path = substr($url, strpos($url, '/'));
+		$path='';
+		if (strpos($host, '/')) {
+			$host = substr($host, 0, strpos($host, '/'));
+			$path = substr($host, strpos($url, '/'));
 		} else {
-			$host = $url;
 			$path = '/';
 		}
 		
 		// check to see that an acceptable HTTP header is returned from the URL
 		$http_header = "";
-		$socket = @fsockopen($host ,80);
+
+		// https requires a scheme at the begining of the fsockopen
+		if ($protocol == 'https')
+			$host = 'ssl://' . $host;
+
+		$socket = @fsockopen($host , $protocol_ports[$protocol], $errno, $errstr);
+		// print_r(array($host, $protocol_ports[$protocol], $errno, $errstr));
+		// exit;
+
+
+
 		if ($socket) {
-			fputs($socket, "HEAD $path HTTP/1.0\r\n\r\n");
+			fputs($socket, "HEAD $path HTTP/1.1\r\n\r\n");
 			while(!feof($socket)) {
 				$http_header .= fgets($socket);
 			}
@@ -135,7 +150,10 @@ EOF;
 		
 		// parse the HTTP Response code out of the header
 		preg_match("/^HTTP\/\d\.\d (\d\d\d)/", $http_header[0], $matches);
-		
+	
+		print_r($matches);
+		exit;
+
 		if (in_array($matches[1], $acceptable_http_response_codes))
 			return true;
 		else 
@@ -164,7 +182,6 @@ EOF;
 		$action = $_REQUEST['action'];		
 		
 		$whose_urls = ($get_all_urls ? "All" : "My");
-		$paging_links = '';
 		
 		// get all the URLs for this user
 		$sql = "select * from entries";
@@ -172,43 +189,9 @@ EOF;
 		if (!$get_all_urls)
 			$sql .= " where user_id = " . s($_SESSION[shortur_user_id]);
 		
-		$result = q($sql);
+		$results = q($sql);
 		
-		list($paging_links, $start, $end) = _paging($result);
-		$result = array_splice($result, $start, $per_page);
-		
-		$output =<<<EOF
-			<div class='table'>
-				<div class='table_header'>
-					<div class='table_header_title'>$whose_urls Short URLs</div>
-					$paging_links
-				</div>
-EOF;
-			
-		if ($result) {
-			$n = 0;
-			foreach ($result as $url) {
-				$output .= "<div class='line_item" . ($n%2 ? '_alt' : '') . "'>";
-				$output .= "<em>$base_url$url->short_url</em> points to <em>$url->target</em> " .
-					"<span class='line_item_action'><a href='admin.php?action=edit&id=$url->id'>edit</a> " . 
-					"<a href='admin.php?action=delete&id=$url->id'>delete</a></span>";
-					
-				$output .= "</div>";
-				$n++;
-			}
-			
-		} else {
-			$output .= "<div class='line_item'>You have no Short URLs set up</div>";
-		}
-		
-		$output .=<<<EOF
-			<div class='table_footer'>
-				$paging_links
-			</div>
-		</div class='table'>
-EOF;
-		
-		return $output;
+		return _display_short_urls($results, "$whose_urls Short URLs", "You have no Short URLs set up");
 				
 	}
 	
@@ -332,6 +315,73 @@ EOF;
 
 	}
 	
+	function search_form($query=null) {
+	
+		return <<<EOF
+		
+			<form action='admin.php' method='get'>
+				<input type='hidden' name='action' value='search'>
+				
+				<div class='table'>
+					<div class='table_header'>Search for Short URL</div>
+					<div class='line_item'>
+						<b>Search For:</b> <input type='text' name='query' value='$query'/> 
+					</div>
+					<div class='line_item'>
+						<input type='submit' name='submit' value='Search'/>
+					</div>
+				</div class='table'>
+				
+			</form>
+EOF;
+	
+	}
+	
+	function _display_short_urls($results, $title, $no_results_text="No Results") {
+	
+		global $http_path;
+		global $base_url;
+		global $per_page;
+		global $show_pages;	
+
+		list($paging_links, $start, $end) = _paging($results);
+		$results = array_splice($results, $start, $per_page);		
+	
+		$output =<<<EOF
+			<div class='table'>
+				<div class='table_header'>
+					<div class='table_header_title'>$title</div>
+					$paging_links
+				</div>
+EOF;
+			
+		if ($results) {
+			$n = 0;
+			foreach ($results as $url) {
+				$output .= "<div class='line_item" . ($n%2 ? '_alt' : '') . "'>";
+				$output .= "<em>$base_url$url->short_url</em> points to <em>$url->target</em> " .
+					"<span class='line_item_action'><a href='admin.php?action=edit&id=$url->id'>edit</a> " . 
+					"<a href='admin.php?action=delete&id=$url->id'>delete</a></span>";
+					
+				$output .= "</div>";
+				$n++;
+			}
+			
+		} else {
+			$output .= "<div class='line_item'>$no_results_text</div>";
+		}
+		
+		$output .=<<<EOF
+			<div class='table_footer'>
+				$paging_links
+			</div>
+		</div class='table'>
+EOF;
+
+		return $output;
+	
+	}
+	
 	function _paging($result_set) {
 		
 		global $http_path;
@@ -344,10 +394,16 @@ EOF;
 		$start = 0;
 		$end = count($result_set)-1;
 		$paging_links = '';
+		$tmp_query_string = "?";
+		
+		// cycle thru the query string key/value pairs and rebuild it without the page
+		foreach ($_GET as $k=>$v) {
+			if ($k != 'page') $tmp_query_string .= $k . '=' . $v . '&';
+		}
 		
 		if (count($result_set) > $per_page) {
 			
-			$tmp_base_url = $http_path . "admin.php?action=$action&";
+			$tmp_base_url = $http_path . "admin.php" . $tmp_query_string;
 			$total_pages = ceil(count($result_set) / $per_page);
 			$start = ($page-1) * $per_page;
 			$end = (count($result_set) > ($start+$per_page) ? ($start+$per_page) : count($result_set));
