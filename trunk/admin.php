@@ -109,7 +109,39 @@ EOF;
 			}
 			
 			template($data);
-			break;			
+			break;
+			
+		case 'search': 
+		
+			$data['tab'] = 'search';
+			$data['content'] = search_form($_REQUEST['query']);
+			
+			if ($_REQUEST['submit']) {
+				
+				if (!$_REQUEST['query'])
+					$data['errors'][] = "No query specified.";
+					
+				if (!$data['errors']) {
+				
+					$sql = "select * from entries where (target like '%" . s($_REQUEST['query']) . "%' or " .
+						"short_url like '%" . s($_REQUEST['query']) . "%')";
+					
+					if (!validate_admin_user()) 
+						$sql .= ' and user_id = ' . $_SESSION[shortur_user_id];
+					
+					// debug($sql);
+					
+					$results = q($sql);
+					
+					$data['content'] .= _display_short_urls($results, "Search results for '" . 
+						$_REQUEST['query'] . "'", "No results match your search.");
+					
+				}
+					
+			}
+			
+			template($data);
+			break;
 			
 		case 'edit':
 
@@ -132,9 +164,13 @@ EOF;
 				$data['errors'][] = "This short url does not exist.";
 				
 			// make sure this user is the owner of this url or is an admin
-			if (($short_url->user_id != $_SESSION['shortur_user_id']) && !validate_admin_user())
+			if (($short_url->user_id != $_SESSION['shortur_user_id']) && !validate_admin_user()) {
+			
 				$data['errors'][] = "You are not the owner of this short url.";
+				template($data);
 				
+			}
+			
 			if (!$data['errors']) {
 				
 				if ($_REQUEST['submit']) {
@@ -183,8 +219,12 @@ EOF;
 			$data['tab'] = 'add_user';
 			
 			// make sure that the current user is authorized to admin
-			if (!validate_admin_user())
+			if (!validate_admin_user()) {
+			
 				$data['errors'][] = "You are not authorized to make these changes.";
+				template($data);
+			
+			}
 		
 			if ($_REQUEST['submit']) {
 				

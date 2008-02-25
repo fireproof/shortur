@@ -142,6 +142,10 @@ EOF;
 					
 					$admin_tab
 					
+					<div id='search'>
+						<span><a href='admin.php?action=search'>Search</a></span>
+					</div>
+					
 					<div id='logout'>
 						<span><a href='admin.php?action=logout'>Logout</a></span>
 					</div>			
@@ -200,6 +204,9 @@ EOF;
 	</body>
 </html>
 EOF;
+	
+	// kill anything after templating
+	exit;
 
 	}	
 	
