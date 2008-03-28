@@ -1,7 +1,6 @@
 <?php
 
 	require_once('default.inc.php');
-	$acceptable_http_response_codes = array('200', '302');
 	
 	session_start();
 	
@@ -100,66 +99,6 @@ EOF;
 		}
 		
 	} // end auth()
-	
-	function validate_target($url) {
-	
-		global $acceptable_http_response_codes;
-
-		$protocol_ports = array(
-			'http'=>'80',
-			'https'=>'443'
-		);
-
-		// strip the protocol off the front and trim the url
-		list($protocol, $host) = split('://', $url);
-		$protocol = strtolower($protocol);
-
-		// split the URL on the first instance of a slash, if it exists
-		$path='';
-		if (strpos($host, '/')) {
-			$host = substr($host, 0, strpos($host, '/'));
-			$path = substr($host, strpos($url, '/'));
-		} else {
-			$path = '/';
-		}
-		
-		// check to see that an acceptable HTTP header is returned from the URL
-		$http_header = "";
-
-		// https requires a scheme at the begining of the fsockopen
-		if ($protocol == 'https')
-			$host = 'ssl://' . $host;
-
-		$socket = @fsockopen($host , $protocol_ports[$protocol], $errno, $errstr);
-		// print_r(array($host, $protocol_ports[$protocol], $errno, $errstr));
-		// exit;
-
-
-
-		if ($socket) {
-			fputs($socket, "HEAD $path HTTP/1.1\r\n\r\n");
-			while(!feof($socket)) {
-				$http_header .= fgets($socket);
-			}
-			fclose($socket);
-		} else {
-			return false;
-		}
-		
-		$http_header = split("\n", $http_header);
-		
-		// parse the HTTP Response code out of the header
-		preg_match("/^HTTP\/\d\.\d (\d\d\d)/", $http_header[0], $matches);
-	
-		print_r($matches);
-		exit;
-
-		if (in_array($matches[1], $acceptable_http_response_codes))
-			return true;
-		else 
-			return false;
-		
-	}
 	
 	function validate_admin_user() {
 	
@@ -359,7 +298,7 @@ EOF;
 			$n = 0;
 			foreach ($results as $url) {
 				$output .= "<div class='line_item" . ($n%2 ? '_alt' : '') . "'>";
-				$output .= "<em>$base_url$url->short_url</em> points to <em>$url->target</em> " .
+				$output .= "<em>$url->short_url</em> points to <em>$url->target</em> " .
 					"<span class='line_item_action'><a href='admin.php?action=edit&id=$url->id'>edit</a> " . 
 					"<a href='admin.php?action=delete&id=$url->id'>delete</a></span>";
 					
