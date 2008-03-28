@@ -43,14 +43,6 @@
 						"The short URL '$_REQUEST[short_url]' is already set up as a short url.";
 				}
 				
-				// make sure that the target URL is valid
-				/*
-				if (!validate_target($_REQUEST['target_url'])) {
-					$data['errors'][] = 
-						"The target URL is not a valid website.  Please check the target URL and try again.";
-				}	
-				*/
-				
 				if (!$data['errors']) {
 					q("insert into entries(user_id, target, short_url) values (" . 
 						s($_SESSION[shortur_user_id]) . ", ' " . s($_REQUEST[target_url]) . "', '" . 
@@ -77,15 +69,15 @@
 				$data['errors'][] = "This short url does not exist.";
 				
 			// make sure this user is the owner of this url
-			if ($short_url->user_id != $_SESSION['shortur_user_id'])
-				$data['errors'] = "You are not the owner of this short url.";
+			if ($short_url && ($short_url->user_id != $_SESSION['shortur_user_id']))
+				$data['errors'][] = "You are not the owner of this short url.";
 				
 			if (!$data['errors']) {
 				
 				if ($_REQUEST['submit']) {
 					
 					q("delete from entries where id = " . s($_REQUEST[id]));
-					header("Location: admin.php");
+					visit_return_url();
 					
 				} else {
 					
@@ -112,7 +104,7 @@ EOF;
 			break;
 			
 		case 'search': 
-		
+	
 			$data['tab'] = 'search';
 			$data['content'] = search_form($_REQUEST['query']);
 			
@@ -129,10 +121,10 @@ EOF;
 					if (!validate_admin_user()) 
 						$sql .= ' and user_id = ' . $_SESSION[shortur_user_id];
 					
-					// debug($sql);
-					
 					$results = q($sql);
-					
+				
+					set_return_url();
+
 					$data['content'] .= _display_short_urls($results, "Search results for '" . 
 						$_REQUEST['query'] . "'", "No results match your search.");
 					
@@ -184,18 +176,13 @@ EOF;
 							"The short URL '$_REQUEST[short_url]' is already set up as a short url.";
 					}
 
-					// make sure that the target URL is valid
-					/*
-					if (!validate_target($_REQUEST['target_url'])) {
-						$data['errors'][] = 
-							"The target URL is not a valid website.  Please check the target URL and try again.";
-					}						
-					*/
-				
 					if (!$data['errors']) {
+						
 						q("update entries set target = '" . s($_REQUEST[target_url]) . "', short_url = '" . 
 							s($_REQUEST[short_url]) . "' where id = " . s($_REQUEST[id]));
-						header("Location: admin.php");
+						
+						visit_return_url();
+						
 					}
 				}
 			}
@@ -211,6 +198,9 @@ EOF;
 			
 			$data['tab'] = 'admin';
 			$data['content'] = users();
+			
+			set_return_url();
+			
 			template($data);
 			break;
 		
@@ -251,7 +241,7 @@ EOF;
 					$_REQUEST['password'] = md5($_REQUEST['password']);
 					q("insert into users (username, password, admin) values ('" . s($_REQUEST[username]) . 
 						"', '" . s($_REQUEST[password]) . "', " . s($_REQUEST[admin]) . ")");
-					header("Location: admin.php?action=admin");
+					visit_return_url();
 				}
 			}			
 			
@@ -315,7 +305,7 @@ EOF;
 						setcookie($cookie_name, null);
 						header("Location: admin.php");
 					} else {
-						header("Location: admin.php?action=admin");
+						visit_return_url();
 					}
 				}
 			}
@@ -372,7 +362,7 @@ EOF;
 				}
 				
 				q("delete from users where id = $user->id");
-				header("Location: admin.php?action=admin");
+				visit_return_url();
 				
 			}
 			
@@ -404,7 +394,7 @@ EOF;
 			}
 			
 			$data['content'] = short_urls(true);
-			
+			set_return_url();
 			template($data);
 			break;
 	
@@ -419,7 +409,7 @@ EOF;
 
 			$data['tab'] = 'main';
 			$data['content'] .= short_urls(false);
-			
+			set_return_url();
 			template($data);
 			break;
 	

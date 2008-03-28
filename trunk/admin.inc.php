@@ -377,4 +377,18 @@ EOF;
 			
 	}
 	
+	function set_return_url() {
+		$_SESSION['return_url'] = substr($_SERVER['REQUEST_URI'], strrpos($_SERVER['REQUEST_URI'], '/')+1);
+	}
+	
+	function visit_return_url($default='admin.php') {
+		if (!$_SESSION['return_url']) {
+			header("Location: $default");
+		} else {
+			$url = $_SESSION['return_url'];
+			unset($_SESSION['return_url']);
+			header("Location: $url");
+		}
+	}
+	
 ?>
