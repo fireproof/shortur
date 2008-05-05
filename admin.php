@@ -229,6 +229,15 @@ EOF;
 						$data['errors'][] = "The username '$_REQUEST[username]' is already in use.";		
 				}
 				
+				if (!$_REQUEST['email'])
+					$data['errors'][] = "You must enter an email address";
+				else {
+					list($count) = q("select count(*) as n from users where email = '" . 
+						s($_REQUEST[email]) . "'");
+					if ($count->n > 0)
+						$data['errors'][] = "The email address '$_REQUEST[email]' is already in use.";					
+				}
+				
 				if (!$_REQUEST['password'])
 					$data['errors'][] = "You must enter a password";
 					
@@ -239,13 +248,14 @@ EOF;
 					
 					$_REQUEST['admin'] = ($_REQUEST['admin'] ? $_REQUEST['admin'] : 0);
 					$_REQUEST['password'] = md5($_REQUEST['password']);
-					q("insert into users (username, password, admin) values ('" . s($_REQUEST[username]) . 
-						"', '" . s($_REQUEST[password]) . "', " . s($_REQUEST[admin]) . ")");
+					q("insert into users (username, email, password, admin) values ('" . s($_REQUEST[username]) . 
+						"', '" . s($_REQUEST['email']) . "', '" . s($_REQUEST[password]) . "', " . 
+						s($_REQUEST[admin]) . ")");
 					visit_return_url();
 				}
 			}			
 			
-			$data['content'] = users_form('add_user', $_REQUEST['username'], $_REQUEST['admin']);
+			$data['content'] = users_form('add_user', $_REQUEST['username'], $_REQUEST['email'], $_REQUEST['admin']);
 			template($data);
 			break;
 		
@@ -287,18 +297,29 @@ EOF;
 					if ($count->id != $_REQUEST['id'] && $count->id)
 						$data['errors'][] = "The username '$_REQUEST[username]' is already in use.";				
 				}
+
+				if (!$_REQUEST['email'])
+					$data['errors'][] = "You must enter an email address";			
+				else {
+				
+					list($count) = q("select count(*) as n from users where email = '" . 
+						s($_REQUEST[email]) . "' and id != " . $_REQUEST['id']);
+					
+					if ($count->n > 0)
+						$data['errors'][] = "The email address '$_REQUEST[email]' is already in use.";					
+				}
 					
 				if (!$data['errors']) {
 				
 					$_REQUEST['admin'] = ($_REQUEST['admin'] ? $_REQUEST['admin'] : 0);
+					
 					q("update users set username = '" . s($_REQUEST[username]) . "', admin = " . 
-						s($_REQUEST[admin]) . " where id = " . s($_REQUEST[id]));
+						s($_REQUEST[admin]) . ", email = '" . s($_REQUEST['email']) . "' where id = " . s($_REQUEST[id]));
 					
 					// if they specified a password, update it
 					if ($_REQUEST['password'])
 						q("update users set password = '" . md5($_REQUEST['password']) . "' where id = " . 
 							s($_REQUEST[id]));
-					
 					
 					if ($user->id == $_SESSION['shortur_user_id']) {
 						$_SESSION['shortur_user_id'] = $_SESSION['shortur_username'] = null;
@@ -312,6 +333,7 @@ EOF;
 
 			$data['content'] = users_form('edit_user',
 				($_REQUEST['username'] ? $_REQUEST['username'] : $user->username),
+				($_REQUEST['email'] ? $_REQUEST['email'] : $user->email),
 				($_REQUEST['admin'] ? $_REQUEST['admin'] : $user->admin),
 				$_REQUEST['id']);
 		
@@ -382,6 +404,62 @@ EOF;
 			template($data);
 			break;
 
+		case 'change_password':
+		
+			if ($_REQUEST['submit']) {
+			
+				if (!$_REQUEST['password'] || !$_REQUEST['password_repeat'])
+					$data['errors'][] = "You must enter your new password into both fields.";
+				else if ($_REQUEST['password'] != $_REQUEST['password_repeat'])
+					$data['errors'][] = "The passwords you entered do not match.";
+				
+				if (!$data['errors']) {
+				
+					$password = md5($_REQUEST['password']);
+					$id = $_SESSION[shortur_user_id];
+					
+					q("update users set password = '$password' where id = $id");
+					
+					// change the cookie
+					list($user, $pass) = split('\|', $_COOKIE[$cookie_name]);
+					setcookie($cookie_name, $user . '|' . $pass);
+					$data['messages'][] = "Your password has been updated.";
+					
+				}
+			
+			}
+		
+			$data['content'] = <<<EOF
+		
+		
+		<div class='table'>
+		
+			<form action='admin.php' method='post'>
+				<input type='hidden' name='action' value='change_password' />
+		
+			<div class='table_header'>Changing Password</div>
+			
+			<div class='line_item'>
+				<b>New Password:</b> <input type='password' name='password' />
+			</div>
+
+			<div class='line_item'>
+				<b>Repeat New Password:</b> <input type='password' name='password_repeat' />
+			</div>
+
+			<div class='line_item'>
+				<input type='submit' name='submit' value='Change Password' />
+			</div>
+			
+			</form>
+			
+		</div>
+		
+EOF;
+		
+			template($data);
+			break;
+			
 		case 'all_urls':
 		
 			$data['tab'] = 'all_urls';

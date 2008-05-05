@@ -146,6 +146,10 @@ EOF;
 						<span><a href='admin.php?action=search'>Search</a></span>
 					</div>
 					
+					<div id='change_password'>
+						<span><a href='admin.php?action=change_password'>Change Password</a></span>
+					</div>
+					
 					<div id='logout'>
 						<span><a href='admin.php?action=logout'>Logout</a></span>
 					</div>			
@@ -209,6 +213,21 @@ EOF;
 	exit;
 
 	}	
+	
+	function random_password($length = 8) {
+	
+		$chars = 'abcdefghijlklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
+		srand((double)microtime()*1000000);
+		$password = '';
+		
+		for ($i = 0; $i < $length; $i++) {
+			$r = rand() % (strlen($chars) - 1);
+			$password .= substr($chars, $r, 1);
+		}
+		
+		return $password;
+	
+	}
 	
 	function debug($in=null) {
 		$in = ($in ? $in : time());

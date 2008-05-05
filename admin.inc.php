@@ -84,8 +84,12 @@
 							<b>Remember me:</b> <input type='checkbox' name='remember' id='remember' value='1' />
 						</div>
 						<div class='line_item'>
+							<a href='forgot.php'>Forgot your password?</a>
+						</div>
+						<div class='line_item'>
 							<input type='submit' name='submit' value='Login'>
 						</div>
+						
 					</div>
 				</form>		
 EOF;
@@ -216,7 +220,7 @@ EOF;
 		return $output;
 	}
 	
-	function users_form($action='add_user', $username=null, $admin=null, $id=null) {
+	function users_form($action='add_user', $username=null, $email=null, $admin=null, $id=null) {
 		
 		list($tmp_action, $junk) = split("_", $action);
 		$action_display = ucfirst($tmp_action);
@@ -239,9 +243,12 @@ EOF;
 						<b>Username:</b> <input type='text' name='username' value='$username'/> 
 					</div>
 					<div class='line_item_alt'>
-						<b>Password:</b> <input type='password' name='password' />
+						<b>Email:</b> <input type='text' name='email' value='$email' /> 
 					</div>
 					<div class='line_item'>
+						<b>Password:</b> <input type='password' name='password' />
+					</div>
+					<div class='line_item_alt'>
 						<b>Admin:</b> <input type='checkbox' name='admin' value='1' $admin_checked />
 					</div>
 					<div class='line_item'>
