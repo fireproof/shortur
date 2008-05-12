@@ -1,0 +1,33 @@
+1. Download a copy of ShortUr
+
+2 . Unpack the file and upload the contents to where you want it to reside on your web server.
+
+3. Change the permissions for config.php so that the webserver user can write to it. From the command line, run:
+
+  chmod a+w config.php
+
+4. Point your web browser to http://yourdomain.com/path/to/shortur/install.php. Enter the following information:
+
+ - Installation Path: The web path where ShortUr will be installed.
+ - Database Host: The host where the ShortUr MySQL database will be located.
+ - Database Username: The username for your MySQL database.
+ - Database Password: The password for your MySQL database.
+ - Database Name: The name of your MySQL database. Your MySQL username and password might not have enough access to create a database.
+ - This database has already been created: Your MySQL username and password might not have enough access permissions to create a database using this installer. If you get this error message, create the database using whatever method your web host requires first, then run the installler again and check this box.
+ - Base URL: The base URL for target URLs.
+ - Admin Password: The initial passsword for user 'admin'.
+ - External 404 Page: If ShortUr is asked for, but cannot find a match for a URL, it will spit out a generic "Page Not Found" message. Setting this URL will forward all failed requests to this URL.
+
+5. Assign the path of the ShortUr index.php file to 'ErrorDocument 404' in your Apache configuration file.
+
+	ErrorDocument 404 /path/to/shortur/index.php
+
+6. If you're migrating from Shorty, point your web browser to http://yourdomain.com/path/to/shortur/migrate_from_shorty.php and enter the information about your Shorty installation.
+
+7. Delete 'install.php'
+
+8. Change the file permissions so that 'config.php' is not writeable by the web server. From the command line, run:
+
+	chmod go-wx config.php
+
+9. Login to the admin site at http://yourdomain.com/path/to/shortur/

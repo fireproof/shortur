@@ -1,0 +1,7 @@
+ShortUr is a utility that allows long, convoluted URLs to be accessed by short, meaningful URLs on your site.                          
+
+ShortUr requires PHP, Apache, mod_rewrite and MySQL.
+
+ShortUr was written by Bryan Zera (bzera@colum.edu) with design help from Ivan Brunetti (ibrunetti@colum.edu) and the generous support of Columbia College Chicago.
+
+Copyright 2008 Columbia College Chicago
