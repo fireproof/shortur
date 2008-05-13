@@ -488,7 +488,7 @@ EOF;
 			$results = q($sql);
 
 			$data['content'] .= _display_short_urls($results, "Top Ranked Short URLs", "No results match your search.");
-			$data['tab'] = 'ranking';
+			$data['tab'] = 'ranking';	
 			template($data);
 			break;
 	
