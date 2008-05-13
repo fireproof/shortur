@@ -302,16 +302,28 @@ EOF;
 EOF;
 			
 		if ($results) {
+		
 			$n = 0;
+			$output .= "<table>";
+			$output .= "<tr class='header'>";
+			$output .= "<td>Short URL</td>";
+			$output .= "<td>Target URL</td>";
+			$output .= "<td>Clicks</td>";
+			$output .= "<td>Actions</td>";
+			$output .= "</tr>";
+			
 			foreach ($results as $url) {
-				$output .= "<div class='line_item" . ($n%2 ? '_alt' : '') . "'>";
-				$output .= "<em>$url->short_url</em> points to <em>$url->target</em> " .
-					"<span class='line_item_action'><a href='admin.php?action=edit&id=$url->id'>edit</a> " . 
-					"<a href='admin.php?action=delete&id=$url->id'>delete</a></span>";
+				$output .= "<tr class='line_item" . ($n%2 ? '_alt' : '') . "'>";
+				$output .= "<td>$url->short_url</td>";
+				$output .= "<td>$url->target</td>";
+				$output .= "<td align='center'>$url->clicks</td>";
+				$output .= "<td align='center'><a href='admin.php?action=edit&id=$url->id'>edit</a> " . 
+					"<a href='admin.php?action=delete&id=$url->id'>delete</a></td>";
 					
-				$output .= "</div>";
+				$output .= "</tr>";
 				$n++;
 			}
+			$output .= "</table>";
 			
 		} else {
 			$output .= "<div class='line_item'>$no_results_text</div>";
@@ -323,7 +335,7 @@ EOF;
 			</div>
 		</div class='table'>
 EOF;
-
+		
 		return $output;
 	
 	}

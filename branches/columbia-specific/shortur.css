@@ -14,7 +14,8 @@ body {
 /* main div declarations */ 
  
 div#wrapper {
-	width: 750px;
+	width: auto;
+	min-width: 650px;
 	float: left;
 	margin: 20px 0px 0px 10px;
 }
@@ -183,20 +184,40 @@ div.line_item_highlight em {
 	color: #333;
 }
 
-div.line_item {
-	background-color: #fff;
-	line-height: 1.5em;
+div.line_item, tr.line_item {
+	background-color: #fff;	
 }
 
-div.line_item_alt {
+div.line_item_alt, tr.line_item_alt {
 	background-color: #eee;
 }
 
-div.line_item_highlight {
+div.line_item_highlight, tr.line_item_highlight {
 	background-color: #8ECACF;
 }
 
 span.line_item_action { float: right; }
+
+/* table styles */
+
+table {
+	width: 100%;
+}
+
+table tr.header {
+	background-color: #dfdfdf;
+}
+
+table tr.header td {
+	text-align: center;
+	font-weight: bold;
+	border: 1px solid black;
+}
+
+table tr td {
+	padding: 5px;
+}
+
 
 /* misc styles */
 blockquote {

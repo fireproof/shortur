@@ -475,6 +475,22 @@ EOF;
 			set_return_url();
 			template($data);
 			break;
+			
+		case 'ranking':
+
+			$sql = 'select * from entries ';
+			
+			if (!validate_admin_user()) 
+				$sql .= 'where user_id = ' . $_SESSION[shortur_user_id];
+				
+			$sql .= 'order by clicks desc';
+		
+			$results = q($sql);
+
+			$data['content'] .= _display_short_urls($results, "Top Ranked Short URLs", "No results match your search.");
+			$data['tab'] = 'ranking';
+			template($data);
+			break;
 	
 		case 'logout':
 			

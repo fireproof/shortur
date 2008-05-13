@@ -20,6 +20,9 @@
 		
 		if ($item->id) {
 		
+			// add one click to database
+			q("update entries set clicks = " . ($item->clicks + 1) . " where id = " . $item->id);
+			
 			// forward to the target
 			header("Location: $item->target");
 			
